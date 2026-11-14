@@ -1,7 +1,7 @@
 /**
  * The configuration for the {@link ImageSwitch} component.
  */
-export interface ImageSwitchCfg extends PrimeFacesTypes.component.BaseComponentCfg, JQueryCycle.Configuration {
+export interface ImageSwitchCfg extends PrimeFaces.component.BaseComponentCfg, JQueryCycle.Configuration {
 }
 
 /**
@@ -21,19 +21,19 @@ type CycleContainer = HTMLElement & {
  * the imageswitch programmatically via `$.fn.cycle`:
  *
  * ```javascript
- * const component = PF("myImageSwitchWidget");
+ * const component = PF("myImageSwitch");
  * component.getJQ().cycle("resume");
  * ```
  */
 export class ImageSwitch<Cfg extends ImageSwitchCfg = ImageSwitchCfg> extends PrimeFaces.component.BaseComponent<Cfg> {
 
-    override init(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override init(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         super.init(cfg);
 
         this.jq.cycle(this.cfg);
     }
 
-    override refresh(cfg: PrimeFacesTypes.component.PartialComponentCfg<Cfg>): void {
+    override refresh(cfg: PrimeFaces.component.PartialComponentCfg<Cfg>): void {
         this.stopCycleTimer();
         super.refresh(cfg);
     }
