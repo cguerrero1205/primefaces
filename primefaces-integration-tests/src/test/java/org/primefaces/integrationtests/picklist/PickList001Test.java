@@ -512,26 +512,26 @@ class PickList001Test extends AbstractPrimePageTest {
 
         // Act
         page.standardPickList.pick("Lewis", "Max");
-        PrimeSelenium.waitGui().until(ExpectedConditions.attributeToBe(region, "textContent", "Moved to Target"));
+        PrimeSelenium.waitGui().until(ExpectedConditions.attributeToBe(region, "textContent", "Moved to Target: 2"));
 
         // Assert
-        assertEquals("Moved to Target", region.getAttribute("textContent"));
+        assertEquals("Moved to Target: 2", region.getAttribute("textContent"));
 
         // Act
         page.standardPickList.moveTargetItemsUp("Max");
-        PrimeSelenium.waitGui().until(ExpectedConditions.attributeToBe(region, "textContent", "Moved Up"));
+        PrimeSelenium.waitGui().until(ExpectedConditions.attributeToBe(region, "textContent", "Moved Up: 1"));
         // move up announces before its animation, wait until the item is actually moved
         PrimeSelenium.waitGui().until(d -> page.standardPickList.getTargetListLabels().equals(Arrays.asList("Max", "Lewis")));
 
         // Assert
-        assertEquals("Moved Up", region.getAttribute("textContent"));
+        assertEquals("Moved Up: 1", region.getAttribute("textContent"));
 
         // Act
         page.standardPickList.remove("Lewis");
-        PrimeSelenium.waitGui().until(ExpectedConditions.attributeToBe(region, "textContent", "Moved to Source"));
+        PrimeSelenium.waitGui().until(ExpectedConditions.attributeToBe(region, "textContent", "Moved to Source: 1"));
 
         // Assert
-        assertEquals("Moved to Source", region.getAttribute("textContent"));
+        assertEquals("Moved to Source: 1", region.getAttribute("textContent"));
         assertConfiguration(page.standardPickList.getClientConfiguration());
     }
 

@@ -647,11 +647,13 @@ export class BaseComponent<Cfg extends BaseComponentCfg = BaseComponentCfg> {
      * @returns The ARIA label text - either from the component configuration if specified, 
      * or from the PrimeFaces global ARIA labels
      */
-    getAriaLabel(label: keyof PrimeFacesTypes.LocaleAria): string {
-        if (this.cfg.labels && this.cfg.labels.aria && this.cfg.labels.aria[label]) {
-            return this.cfg.labels.aria[label];
+    getAriaLabel(label: keyof PrimeFacesTypes.LocaleAria, defaultValue?: string, options?: Record<string, string>): string {
+        const override = this.cfg.labels?.aria?.[label];
+        if (!override) {
+            return core.getAriaLabel(label, defaultValue, options);
         }
-        return core.getAriaLabel(label);
+        // component-level labels take precedence over the global locale
+        return Object.entries(options ?? {}).reduce((text, [key, value]) => text.replace(`{${key}}`, value), override);
     }
 
     // TODO: Why are the targetComponent and jqTargetId parameters necessary?
