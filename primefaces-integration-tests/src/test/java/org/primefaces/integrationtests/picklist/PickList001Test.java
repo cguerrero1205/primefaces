@@ -511,11 +511,12 @@ class PickList001Test extends AbstractPrimePageTest {
         WebElement region = page.standardPickList.getAriaRegion();
 
         // Act
+        // pick() transfers each item on its own, so the last transfer moved 1 item
         page.standardPickList.pick("Lewis", "Max");
-        PrimeSelenium.waitGui().until(ExpectedConditions.attributeToBe(region, "textContent", "Moved to Target: 2"));
+        PrimeSelenium.waitGui().until(ExpectedConditions.attributeToBe(region, "textContent", "Moved to Target: 1"));
 
         // Assert
-        assertEquals("Moved to Target: 2", region.getAttribute("textContent"));
+        assertEquals("Moved to Target: 1", region.getAttribute("textContent"));
 
         // Act
         page.standardPickList.moveTargetItemsUp("Max");
