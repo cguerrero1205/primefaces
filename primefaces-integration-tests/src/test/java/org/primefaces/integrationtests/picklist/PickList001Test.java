@@ -536,6 +536,29 @@ class PickList001Test extends AbstractPrimePageTest {
         assertConfiguration(page.standardPickList.getClientConfiguration());
     }
 
+    @Test
+    @Order(29)
+    @DisplayName("PickList: #15515 transferring several items at once announces the number of moved items")
+    void ariaRegionAnnouncesMovedItemsCount(final Page page) {
+        WebElement region = page.standardPickList.getAriaRegion();
+        int count = page.standardPickList.getSourceListLabels().size();
+
+        // Act
+        page.standardPickList.pickAll();
+        PrimeSelenium.waitGui().until(ExpectedConditions.attributeToBe(region, "textContent", "Moved to Target: " + count));
+
+        // Assert
+        assertEquals("Moved to Target: " + count, region.getAttribute("textContent"));
+
+        // Act
+        page.standardPickList.removeAll();
+        PrimeSelenium.waitGui().until(ExpectedConditions.attributeToBe(region, "textContent", "Moved to Source: " + count));
+
+        // Assert
+        assertEquals("Moved to Source: " + count, region.getAttribute("textContent"));
+        assertConfiguration(page.standardPickList.getClientConfiguration());
+    }
+
     private JSONObject assertConfiguration(JSONObject cfg) {
         assertNoJavascriptErrors();
         System.out.println("Picklist Config = " + cfg);
