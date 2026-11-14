@@ -25,6 +25,7 @@ package org.primefaces.component.datatable.feature;
 
 import org.primefaces.component.datatable.DataTable;
 import org.primefaces.component.datatable.DataTableState;
+import org.primefaces.model.FilterMeta;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.util.LangUtils;
 
@@ -300,9 +301,20 @@ public class SelectionFeature implements DataTableFeature {
 
         if (table.isLazy()) {
             // For lazy tables, load all data at once using the lazy data model
+            // Same sort/filter maps as DataTable#loadLazyScrollData: only active ones, keyed by field
             LazyDataModel<?> lazyModel = table.getLazyDataModel();
-            int rowCount = lazyModel.getRowCount();
-            List<?> allData = lazyModel.load(0, rowCount, table.getSortByAsMap(), table.getFilterByAsMap());
+            Map<String, FilterMeta> filterBy = table.getActiveFilterMeta();
+            int rowCount;
+            if (filterBy.isEmpty() || table.isSelectAllFilteredOnly()) {
+                // the model has already been counted with the active filters
+                rowCount = lazyModel.getRowCount();
+            }
+            else {
+                // selectAllFilteredOnly=false: select all rows, ignoring the active filters
+                filterBy = Collections.emptyMap();
+                rowCount = lazyModel.count(filterBy);
+            }
+            List<?> allData = lazyModel.load(0, rowCount, table.getActiveSortMeta(), filterBy);
 
             if (allData == null) {
                 return;

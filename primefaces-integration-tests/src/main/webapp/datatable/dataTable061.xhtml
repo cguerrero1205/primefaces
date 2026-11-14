@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core"
+      xmlns:p="primefaces">
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+
+    <h:body>
+
+        <h:form id="form">
+            <p:messages id="msgs" showDetail="true">
+                <p:autoUpdate/>
+            </p:messages>
+
+            <p:dataTable id="datatable" value="#{dataTable061.lazyDataModel}" lazy="true" var="lang"
+                         selection="#{dataTable061.selectedProgLanguages}" rowKey="#{lang.id}"
+                         paginator="true" rows="3" selectionPageOnly="false"
+                         selectAllFilteredOnly="#{dataTable061.selectAllFilteredOnly}">
+                <p:column selectionBox="true" style="width:16px;text-align:center"/>
+
+                <p:column headerText="ID" field="id"/>
+
+                <p:column headerText="Name" field="name" filterBy="#{lang.name}" filterMatchMode="contains"/>
+
+                <p:column headerText="First Appeared" field="firstAppeared"/>
+            </p:dataTable>
+
+            <p:commandButton id="button" value="Submit" update="@form" action="#{dataTable061.submit}"/>
+            <p:selectBooleanButton id="toggleSelectAllFilteredOnly" value="#{dataTable061.selectAllFilteredOnly}"
+                                   onLabel="Filtered only" offLabel="All rows">
+                <p:ajax update="@form"/>
+            </p:selectBooleanButton>
+        </h:form>
+
+    </h:body>
+</f:view>
+
+</html>
